@@ -1,8 +1,85 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import React, { useEffect, useState } from "react";
+import styles from "../styles/Home.module.css";
+import Head from "next/head";
+import Player from "../components/player";
+import { addPlayer, getPlayers, searchPlayer } from "../services";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Home() {
+  const [playersList, setPlayersList] = useState([]);
+  const [loader, setLoader] = useState(false);
+  const [search, setSearch] = useState("");
+  const [player, setPlayer] = useState({
+    name: "",
+    age: 0,
+    matches: 0,
+  });
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    setLoader(true);
+    getPlayers()
+      .then((res) => {
+        setPlayersList(res?.data);
+        setLoader(false);
+      })
+      .catch((err) => {
+        setLoader(false);
+        toast.error(err);
+      });
+  };
+
+  const deleteUser = (id) => {
+    const filteredPlayerList = playersList.filter(
+      (player) => player._id !== id
+    );
+    setPlayersList(filteredPlayerList);
+  };
+
+  const changeHandler = (e) => {
+    const key = e.target.name;
+    const value = e.target.value;
+    setPlayer({
+      ...player,
+      [key]: value,
+    });
+  };
+  const { name, age, matches } = player;
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (name !== "" && age !== 0 && matches !== 0) {
+      addPlayer(player)
+        .then((res) => {
+          toast.success("submited");
+          fetchData();
+        })
+        .catch((err) => {
+          toast.error(err);
+        });
+    } else {
+      toast.error("empty field not allowed");
+    }
+  };
+
+  useEffect(() => {
+    if (search !== "") {
+      searchPlayer(search)
+        .then((res) => {
+          setPlayersList(res?.data);
+        })
+        .catch((err) => {
+          toast.error(err);
+        });
+    } else {
+      fetchData();
+    }
+  }, [search]);
+  const searchHandler = (e) => {
+    setSearch(e.target.value);
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -12,12 +89,50 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-      <h1>Hello</h1>
+        <form onSubmit={submitHandler} className={styles.form}>
+          <input
+            name="name"
+            value={name}
+            placeholder="name"
+            onChange={changeHandler}
+          />
+          <input
+            name="age"
+            value={age}
+            placeholder="age"
+            type="number"
+            onChange={changeHandler}
+          />
+          <input
+            name="matches"
+            value={matches}
+            placeholder="matches"
+            type="number"
+            onChange={changeHandler}
+          />
+          <button type="submit">Add</button>
+        </form>
+
+        <input
+          value={search}
+          name="search"
+          placeholder="search by name"
+          className={styles.search}
+          onChange={searchHandler}
+        />
+        {playersList.length > 0 ? (
+          playersList.map((player) => (
+            <Player player={player} key={player._id} deleteUser={deleteUser} />
+          ))
+        ) : loader ? (
+          <h1>loading...</h1>
+        ) : (
+          <h1>No Record Found</h1>
+        )}
       </main>
 
-      <footer className={styles.footer}>
-       crickit footer
-      </footer>
+      <footer className={styles.footer}>welove@crickit</footer>
+      <ToastContainer autoClose={1000} position="bottom-right" />
     </div>
-  )
+  );
 }
