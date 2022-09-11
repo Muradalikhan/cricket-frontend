@@ -51,4 +51,18 @@ function deletePlayer(playerId) {
       });
   });
 }
-export { getPlayers,addPlayer, updatePlayer, deletePlayer };
+function searchPlayer(name) {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(`students/search?name=${name}`)
+      .then((res) => resolve(res))
+      .catch((err) => {
+        if (err && err.response) {
+          reject(err.message);
+        }
+      });
+  });
+}
+
+
+export { getPlayers, addPlayer, updatePlayer, deletePlayer, searchPlayer };
