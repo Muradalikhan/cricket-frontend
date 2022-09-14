@@ -2,13 +2,19 @@ import React, { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Head from "next/head";
 import Player from "../components/player";
-import { addPlayer, getPlayers, searchPlayer } from "../services";
+import {
+  addPlayer,
+  filteredByAge,
+  getPlayers,
+  searchPlayer,
+} from "../services";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function Home() {
   const [playersList, setPlayersList] = useState([]);
   const [loader, setLoader] = useState(false);
   const [search, setSearch] = useState("");
+  const [selectVal, setSelectVal] = useState("");
   const [player, setPlayer] = useState({
     name: "",
     age: 0,
@@ -80,6 +86,28 @@ export default function Home() {
   const searchHandler = (e) => {
     setSearch(e.target.value);
   };
+
+  useEffect(() => {
+    if (selectVal==0) {
+      fetchData()
+    } else if (selectVal == 1) {
+      filterPlayers(10, 20);
+    } else if (selectVal == 2) {
+      filterPlayers(20, 30);
+    } else if (selectVal == 3) {
+      filterPlayers(30, 40);
+    }
+  }, [selectVal]);
+
+  const filterPlayers = (fAge, lAge) => {
+    filteredByAge(fAge, lAge)
+      .then((res) => {
+        setPlayersList(res?.data);
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+  };
   return (
     <div className={styles.container}>
       <Head>
@@ -120,6 +148,20 @@ export default function Home() {
           className={styles.search}
           onChange={searchHandler}
         />
+        <select
+          placeholder="filter by Age"
+          value={selectVal}
+          className={styles.select}
+          onChange={(e) => setSelectVal(e.target.value)}
+        >
+          <option value="" disabled selected hidden>
+            filter by age
+          </option>
+          <option value={0}>All</option>
+          <option value={1}>10 - 20</option>
+          <option value={2}>20 - 30</option>
+          <option value={3}>30 - 40</option>
+        </select>
         {playersList.length > 0 ? (
           playersList.map((player) => (
             <Player player={player} key={player._id} deleteUser={deleteUser} />

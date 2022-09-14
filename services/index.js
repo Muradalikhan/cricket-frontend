@@ -64,5 +64,25 @@ function searchPlayer(name) {
   });
 }
 
+function filteredByAge(fAge,lAge) {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(`students/filterByAge?fAge=${fAge}&lAge=${lAge}`)
+      .then((res) => resolve(res))
+      .catch((err) => {
+        if (err && err.response) {
+          reject(err.message);
+        }
+      });
+  });
+}
 
-export { getPlayers, addPlayer, updatePlayer, deletePlayer, searchPlayer };
+
+export {
+  getPlayers,
+  addPlayer,
+  updatePlayer,
+  deletePlayer,
+  searchPlayer,
+  filteredByAge,
+};
