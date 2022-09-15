@@ -1,6 +1,8 @@
 import React from "react";
 import Head from "next/head";
 import Header from "./Header";
+import Footer from "./footer";
+import styles from "../styles/Layout.module.css";
 
 const Layout = ({ children }) => {
   return (
@@ -11,8 +13,9 @@ const Layout = ({ children }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header />
-      <main>{children}</main>
+      <Header className={styles.header} />
+      <main className={styles.container}>{children}</main>
+      <Footer className={styles.footer} />
     </div>
   );
 };
