@@ -10,6 +10,7 @@ import {
   uploadImg,
 } from "../services";
 import { ToastContainer, toast } from "react-toastify";
+import Input from "../components/input";
 
 export default function Home() {
   const [playersList, setPlayersList] = useState([]);
@@ -144,29 +145,34 @@ export default function Home() {
 
       <main className={styles.main}>
         <form onSubmit={submitHandler} className={styles.form}>
-          <input
+          <Input
             type="file"
             name="upload-file"
             accept="image/png, image/gif, image/jpeg, image/jpg"
+            label="Upload Image"
             onChange={fileHandler}
             ref={fileRef}
           />
-          <input
+          <Input
             name="name"
             value={name}
-            placeholder="name"
+            type="text"
+            label="Name"
+            placeholder="Name"
             onChange={changeHandler}
           />
-          <input
+          <Input
             name="age"
             value={age}
-            placeholder="age"
             type="number"
+            label="Age"
+            placeholder="age"
             onChange={changeHandler}
           />
-          <input
+          <Input
             name="matches"
             value={matches}
+            label="Matches"
             placeholder="matches"
             type="number"
             onChange={changeHandler}
