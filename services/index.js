@@ -76,6 +76,24 @@ function filteredByAge(fAge,lAge) {
       });
   });
 }
+function uploadImg(data) {
+  return new Promise((resolve, reject) => {
+    axios({
+      url: `students/upload`,
+      method: "post",
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      data
+    })
+      .then((res) => resolve(res))
+      .catch((err) => {
+        if (err && err.response) {
+          reject(err.message);
+        }
+      });
+  });
+}
 
 
 export {
@@ -85,4 +103,5 @@ export {
   deletePlayer,
   searchPlayer,
   filteredByAge,
+  uploadImg,
 };

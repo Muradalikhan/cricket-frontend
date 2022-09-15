@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "../styles/Home.module.css";
 import Head from "next/head";
 import Player from "../components/player";
@@ -7,6 +7,7 @@ import {
   filteredByAge,
   getPlayers,
   searchPlayer,
+  uploadImg,
 } from "../services";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -19,11 +20,43 @@ export default function Home() {
     name: "",
     age: 0,
     matches: 0,
+    image:null,
   });
+  const fileRef=useRef(null)
 
   useEffect(() => {
     fetchData();
   }, []);
+
+
+  useEffect(() => {
+    if (search !== "") {
+      searchPlayer(search)
+        .then((res) => {
+          setPlayersList(res?.data);
+        })
+        .catch((err) => {
+          toast.error(err);
+        });
+    } else {
+      fetchData();
+    }
+  }, [search]);
+
+  useEffect(() => {
+    if (selectVal == 0) {
+      fetchData();
+    } else if (selectVal == 1) {
+      filterPlayers(10, 20);
+    } else if (selectVal == 2) {
+      filterPlayers(21, 30);
+    } else if (selectVal == 3) {
+      filterPlayers(31, 40);
+    }
+  }, [selectVal]);
+  const searchHandler = (e) => {
+    setSearch(e.target.value);
+  };
 
   const fetchData = () => {
     setLoader(true);
@@ -53,51 +86,41 @@ export default function Home() {
       [key]: value,
     });
   };
-  const { name, age, matches } = player;
+  const fileHandler=(e)=>{
+    const file=e.target.files[0]
+    if(file){
+      setPlayer(prev=>({
+        ...prev,
+        image:file
+      }))
+    }
+  }
   const submitHandler = (e) => {
     e.preventDefault();
-    if (name !== "" && age !== 0 && matches !== 0) {
-      addPlayer(player)
-        .then((res) => {
-          toast.success("submited");
-          fetchData();
-        })
-        .catch((err) => {
-          toast.error(err);
+    if(image){
+      const formData=new FormData();
+      formData.append("file",image);
+
+      uploadImg(formData)
+      .then((res)=>{
+        return addPlayer({
+          ...player,
+          image:res.data
         });
-    } else {
-      toast.error("empty field not allowed");
+      }).then((res)=>{
+        setPlayersList((prev) => [res.data,...prev]);
+        setPlayer({
+          name: "",
+          age: 0,
+          matches: 0,
+          image: null,
+        });
+        fileRef.current.value="";
+        toast.success('record added')
+      })
+      .catch((err)=>{toast.error(err)})
     }
   };
-
-  useEffect(() => {
-    if (search !== "") {
-      searchPlayer(search)
-        .then((res) => {
-          setPlayersList(res?.data);
-        })
-        .catch((err) => {
-          toast.error(err);
-        });
-    } else {
-      fetchData();
-    }
-  }, [search]);
-  const searchHandler = (e) => {
-    setSearch(e.target.value);
-  };
-
-  useEffect(() => {
-    if (selectVal==0) {
-      fetchData()
-    } else if (selectVal == 1) {
-      filterPlayers(10, 20);
-    } else if (selectVal == 2) {
-      filterPlayers(20, 30);
-    } else if (selectVal == 3) {
-      filterPlayers(30, 40);
-    }
-  }, [selectVal]);
 
   const filterPlayers = (fAge, lAge) => {
     filteredByAge(fAge, lAge)
@@ -108,6 +131,9 @@ export default function Home() {
         toast.error(err);
       });
   };
+
+  const { image, age, matches, name } = player;
+
   return (
     <div className={styles.container}>
       <Head>
@@ -118,6 +144,13 @@ export default function Home() {
 
       <main className={styles.main}>
         <form onSubmit={submitHandler} className={styles.form}>
+          <input
+            type="file"
+            name="upload-file"
+            accept="image/png, image/gif, image/jpeg, image/jpg"
+            onChange={fileHandler}
+            ref={fileRef}
+          />
           <input
             name="name"
             value={name}
@@ -159,8 +192,8 @@ export default function Home() {
           </option>
           <option value={0}>All</option>
           <option value={1}>10 - 20</option>
-          <option value={2}>20 - 30</option>
-          <option value={3}>30 - 40</option>
+          <option value={2}>21 - 30</option>
+          <option value={3}>31 - 40</option>
         </select>
         {playersList.length > 0 ? (
           playersList.map((player) => (

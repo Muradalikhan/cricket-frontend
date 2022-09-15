@@ -1,7 +1,6 @@
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import React, { useState } from "react";
-const playerImg = "/images/babar.jpg";
 import { toast } from "react-toastify";
 import { deletePlayer, updatePlayer } from "../services";
 
@@ -51,7 +50,13 @@ const Player = ({ player, deleteUser }) => {
   };
   return (
     <div className={styles.wrapper}>
-      <Image src={playerImg} width={200} height={200} alt="player" />
+      <Image
+        src={`http://localhost:3333/students/display?fileName=${player.image}`}
+        width={200}
+        height={250}
+        objectFit="fill"
+        alt="player"
+      />
       <div className={styles.detailWrapper}>
         <div>
           <h4>Name</h4>
