@@ -2,9 +2,10 @@ import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
-import { deletePlayer, updatePlayer } from "../services";
+import { updatePlayer } from "../services";
+import { FaEdit, FaTrash, FaCheckCircle } from "react-icons/fa";
 
-const Player = ({ player, deleteUser }) => {
+const Player = ({ player, deleteHandler }) => {
   const [isEdit, setIsEdit] = useState(false);
   const [updatedPlayer, setUpdatedPlayer] = useState({
     ...player,
@@ -34,26 +35,12 @@ const Player = ({ player, deleteUser }) => {
       toast.error("id not found");
     }
   };
-  const deleteHandler = (id) => {
-    if (id) {
-      deleteUser(id);
-      deletePlayer(id)
-        .then((res) => {
-          toast.success("deleted record successfully");
-        })
-        .catch((err) => {
-          toast.error(err);
-        });
-    } else {
-      toast.error("id not found");
-    }
-  };
   return (
     <div className={styles.wrapper}>
       <Image
         src={`http://localhost:3333/students/display?fileName=${player.image}`}
-        width={200}
-        height={250}
+        width={150}
+        height={200}
         objectFit="fill"
         alt="player"
       />
@@ -75,7 +62,7 @@ const Player = ({ player, deleteUser }) => {
           )}
         </div>
         <div>
-          <h4>matches</h4>
+          <h4>Matches</h4>
           {isEdit ? (
             <input value={matches} name="matches" onChange={changeHandler} />
           ) : (
@@ -83,17 +70,26 @@ const Player = ({ player, deleteUser }) => {
           )}
         </div>
         <div>
-          <h4>Actions</h4>
           <div className={styles.actions}>
             {!isEdit ? (
               <>
-                <button onClick={() => setIsEdit(true)}>edit</button>
-                <button onClick={() => deleteHandler(player._id)}>
-                  delete
-                </button>
+                <FaEdit
+                  onClick={() => setIsEdit(true)}
+                  fontSize="30px"
+                  color="#81b29a"
+                />
+                <FaTrash
+                  onClick={() => deleteHandler(player._id)}
+                  fontSize="30px"
+                  color="#e71d36"
+                />
               </>
             ) : (
-              <button onClick={() => updateHandler(player._id)}>update</button>
+              <FaCheckCircle
+                onClick={() => updateHandler(player._id)}
+                fontSize="40px"
+                color="#27b5a7"
+              />
             )}
           </div>
         </div>
