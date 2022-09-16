@@ -1,0 +1,19 @@
+.formWrapper {
+  width: 40%;
+  margin: 50px auto;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+}
+.form input {
+  padding: 15px;
+  background: #fff;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  width: 100%;
+  font-size: 16px;
+  outline: 1px solid #2ec4b6;
+}

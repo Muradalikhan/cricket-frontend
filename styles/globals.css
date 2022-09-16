@@ -4,6 +4,10 @@ body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+  color: #262323;
+  font-weight: 500;
+  background: #feeafa;
 }
 
 a {
@@ -15,28 +19,27 @@ a {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   html {
-    color-scheme: dark;
+    color-scheme: light;
   }
   body {
-    color: white;
-    background: black;
+    color: #262323;
+    font-weight: 500;
+    background: #ffc2d1;
   }
 }
-
 
 ::-webkit-scrollbar {
   width: 10px;
 }
-  ::-webkit-scrollbar-track {
-  background: #262323; 
+::-webkit-scrollbar-track {
+  background: #cecece;
 }
-  ::-webkit-scrollbar-thumb {
-  background: rgb(29, 25, 25); 
-    border-radius:10px;
+::-webkit-scrollbar-thumb {
+  background: rgb(55, 181, 164);
+  border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  
-  background: rgb(45, 43, 43); 
-} 
+  background: rgb(138, 132, 132);
+}
