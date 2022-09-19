@@ -43,6 +43,7 @@ const Player = ({ player, deleteHandler }) => {
         height={200}
         objectFit="fill"
         alt="player"
+        className={styles.img}
       />
       <div className={styles.detailWrapper}>
         <div>
