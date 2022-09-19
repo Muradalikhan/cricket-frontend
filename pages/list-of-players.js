@@ -18,7 +18,7 @@ export default function ListOfPlayers() {
 
   useEffect(() => {
     fetchData();
-  }, [playersList]);
+  }, []);
 
   useEffect(() => {
     if (search !== "") {
@@ -45,6 +45,7 @@ export default function ListOfPlayers() {
       filterPlayers(31, 40);
     }
   }, [selectVal]);
+
   const searchHandler = (e) => {
     setSearch(e.target.value);
   };
@@ -118,19 +119,21 @@ export default function ListOfPlayers() {
           className={styles.search}
           onChange={searchHandler}
         />
-        {playersList.length > 0 ? (
-          playersList.map((player) => (
-            <Player
-              player={player}
-              key={player._id}
-              deleteHandler={deleteHandler}
-            />
-          ))
-        ) : loader ? (
-          <h1>loading...</h1>
-        ) : (
-          <h1>No Record Found</h1>
-        )}
+        <div className={styles.cardsWrapper}>
+          {playersList.length > 0 ? (
+            playersList.map((player) => (
+              <Player
+                player={player}
+                key={player._id}
+                deleteHandler={deleteHandler}
+              />
+            ))
+          ) : loader ? (
+            <h1>loading...</h1>
+          ) : (
+            <h1>No Record Found</h1>
+          )}
+        </div>
       </div>
     </div>
   );
