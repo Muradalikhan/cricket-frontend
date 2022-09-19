@@ -77,7 +77,7 @@ const Player = ({ player, deleteHandler }) => {
                 <FaEdit
                   onClick={() => setIsEdit(true)}
                   fontSize="30px"
-                  color="#81b29a"
+                  color="#27b5a7"
                 />
                 <FaTrash
                   onClick={() => deleteHandler(player._id)}
