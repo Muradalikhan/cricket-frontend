@@ -69,6 +69,12 @@
 .detailWrapper div:last-child {
   margin-left: auto;
 }
+.editInput{
+   border: 1px solid #81b29a;
+   border-radius: 10px;
+   padding: 5px;
+   width:100px !important;
+}
 .actions {
   display: flex;
   gap: 15px;

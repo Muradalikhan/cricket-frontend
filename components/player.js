@@ -49,7 +49,12 @@ const Player = ({ player, deleteHandler }) => {
         <div>
           <h4>Name</h4>
           {isEdit ? (
-            <input value={name} name="name" onChange={changeHandler} />
+            <input
+              className={styles.editInput}
+              value={name}
+              name="name"
+              onChange={changeHandler}
+            />
           ) : (
             <p>{name}</p>
           )}
@@ -57,7 +62,12 @@ const Player = ({ player, deleteHandler }) => {
         <div>
           <h4>Age</h4>
           {isEdit ? (
-            <input value={age} name="age" onChange={changeHandler} />
+            <input
+              className={styles.editInput}
+              value={age}
+              name="age"
+              onChange={changeHandler}
+            />
           ) : (
             <p>{age}</p>
           )}
@@ -65,7 +75,12 @@ const Player = ({ player, deleteHandler }) => {
         <div>
           <h4>Matches</h4>
           {isEdit ? (
-            <input value={matches} name="matches" onChange={changeHandler} />
+            <input
+              className={styles.editInput}
+              value={matches}
+              name="matches"
+              onChange={changeHandler}
+            />
           ) : (
             <p>{matches}</p>
           )}
