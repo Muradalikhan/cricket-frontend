@@ -13,6 +13,7 @@ const AddPlayer = () => {
   const [player, setPlayer] = useState({
     name: "",
     age: 0,
+    average: 0,
     matches: 0,
     image: null,
   });
@@ -55,19 +56,20 @@ const AddPlayer = () => {
             name: "",
             age: 0,
             matches: 0,
+            average: 0,
             image: null,
           });
           fileRef.current.value = "";
           toast.success("record added");
         })
         .catch((err) => {
-            toast.error(err);
+          toast.error(err);
         });
     }
-    router.push('/list-of-players')
+    router.push("/list-of-players");
   };
 
-  const { image, age, matches, name } = player;
+  const { image, age, matches, average, name } = player;
 
   return (
     <div className={styles.formWrapper}>
@@ -94,6 +96,14 @@ const AddPlayer = () => {
           label="Matches"
           placeholder="matches"
           type="number"
+          onChange={changeHandler}
+        />
+        <Input
+          name="average"
+          value={average}
+          type="number"
+          label="Average"
+          placeholder="average"
           onChange={changeHandler}
         />
         <Input
