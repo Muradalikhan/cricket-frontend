@@ -2,14 +2,14 @@
   height: 1em;
   margin-left: 0.5rem;
 }
-.img{
+.img {
   border-radius: 10px;
 }
 .listSection {
   display: flex;
   gap: 100px;
   margin-top: 30px;
-  width: 80%;
+  width: 97%;
 }
 .filters {
   flex: 0.2;
@@ -22,6 +22,11 @@
   overflow-y: auto;
   padding: 0 20px;
   margin: 20px 0;
+}
+.tagWrapper{
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 .search {
   padding: 10px;
@@ -69,15 +74,17 @@
 .detailWrapper div:last-child {
   margin-left: auto;
 }
-.editInput{
-   border: 1px solid #81b29a;
-   border-radius: 10px;
-   padding: 5px;
-   width:100px !important;
+.editInput {
+  border: 1px solid #81b29a;
+  border-radius: 10px;
+  padding: 5px;
+  width: 100px !important;
 }
 .actions {
   display: flex;
   gap: 15px;
+  margin-left: auto;
+  align-self: flex-end;
 }
 .actions svg {
   cursor: pointer;

@@ -15,3 +15,11 @@
 .button:hover {
   background-color: #27b5a7;
 }
+.tag {
+  border: 1px solid #3333;
+  border-radius: 30px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
