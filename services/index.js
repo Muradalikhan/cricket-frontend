@@ -13,7 +13,6 @@ function getPlayers() {
   });
 }
 
-
 function addPlayer(body) {
   return new Promise((resolve, reject) => {
     axios
@@ -26,7 +25,7 @@ function addPlayer(body) {
       });
   });
 }
-function updatePlayer(playerId,body) {
+function updatePlayer(playerId, body) {
   return new Promise((resolve, reject) => {
     axios
       .put(`students/${playerId}`, body)
@@ -64,10 +63,24 @@ function searchPlayer(name) {
   });
 }
 
-function filteredByAge(fAge,lAge) {
+function filteredByAge(fAge, lAge) {
   return new Promise((resolve, reject) => {
     axios
       .get(`students/filterByAge?fAge=${fAge}&lAge=${lAge}`)
+      .then((res) => resolve(res))
+      .catch((err) => {
+        if (err && err.response) {
+          reject(err.message);
+        }
+      });
+  });
+}
+function filteredByTag(topPlayer, mostFavorite) {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(
+        `students/filterByTag?topPlayer=${topPlayer}&mostFavorite=${mostFavorite}`
+      )
       .then((res) => resolve(res))
       .catch((err) => {
         if (err && err.response) {
@@ -84,7 +97,7 @@ function uploadImg(data) {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      data
+      data,
     })
       .then((res) => resolve(res))
       .catch((err) => {
@@ -95,7 +108,6 @@ function uploadImg(data) {
   });
 }
 
-
 export {
   getPlayers,
   addPlayer,
@@ -103,5 +115,6 @@ export {
   deletePlayer,
   searchPlayer,
   filteredByAge,
+  filteredByTag,
   uploadImg,
 };
