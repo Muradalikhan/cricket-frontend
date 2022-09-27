@@ -4,6 +4,7 @@ import Player from "../components/player";
 import {
   deletePlayer,
   filteredByAge,
+  filteredByTag,
   getPlayers,
   searchPlayer,
 } from "../services";
@@ -15,6 +16,8 @@ export default function ListOfPlayers() {
   const [loader, setLoader] = useState(false);
   const [search, setSearch] = useState("");
   const [selectVal, setSelectVal] = useState("");
+  const [topPlayer, setTopPlayer] = useState(0);
+  const [favoritePlayer, setFavoritePlayer] = useState(0);
 
   useEffect(() => {
     fetchData();
@@ -46,6 +49,12 @@ export default function ListOfPlayers() {
     }
   }, [selectVal]);
 
+  useEffect(() => {
+    filteredByTag(topPlayer, favoritePlayer)
+      .then((res) => setPlayersList(res.data))
+      .catch((err) => toast.error(err));
+  }, [topPlayer, favoritePlayer]);
+
   const searchHandler = (e) => {
     setSearch(e.target.value);
   };
@@ -73,6 +82,24 @@ export default function ListOfPlayers() {
       });
   };
 
+  const filterListByTag = (e) => {
+    const name = e.target.name;
+    const isChecked = e.target.checked;
+    if (name === "top-player" && isChecked) {
+      setTopPlayer(1);
+    }
+    if (name === "top-player" && !isChecked) {
+      setTopPlayer(0);
+    }
+    if (name === "favorite-player" && isChecked) {
+      setFavoritePlayer(1);
+      setTopPlayer(1);
+    }
+    if (name === "favorite-player" && !isChecked) {
+      setFavoritePlayer(0);
+      setTopPlayer(0);
+    }
+  };
   const deleteHandler = (id) => {
     if (id) {
       deletePlayer(id)
@@ -107,6 +134,30 @@ export default function ListOfPlayers() {
           <option value={2}>21 - 30</option>
           <option value={3}>31 - 40</option>
         </select>
+
+        <div>
+          <p>Filter By Tag</p>
+          <div>
+            <input
+              type="checkbox"
+              id="top-player"
+              name="top-player"
+              value="top-player"
+              onChange={filterListByTag}
+            />
+            <label for="top-player"> Top Player</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="favorite-player"
+              name="favorite-player"
+              value="favorite-player"
+              onChange={filterListByTag}
+            />
+            <label for="favorite-player"> Most Favorite</label>
+          </div>
+        </div>
         <div className={styles.resultFound}>
           {playersList.length} Result found
         </div>
